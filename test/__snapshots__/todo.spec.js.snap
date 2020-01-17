@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Logo renders properly 1`] = `
+"<b-input-group>
+  <!----> <span></span>
+  <b-input-group-append>
+    <b-button variant=\\"outline-secondary\\">
+      編輯
+    </b-button>
+    <b-button variant=\\"outline-secondary\\">
+      刪除
+    </b-button>
+  </b-input-group-append>
+</b-input-group>"
+`;
