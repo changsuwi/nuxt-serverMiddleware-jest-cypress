@@ -1,0 +1,1 @@
+nuxt-serverMiddleware-jest-cypress
