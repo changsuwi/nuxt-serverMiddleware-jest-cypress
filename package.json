@@ -4,6 +4,11 @@
   "description": "My mind-blowing Nuxt.js project",
   "author": "Vicharm",
   "private": true,
+  "config":{
+    "nuxt": {
+      "host": "0.0.0.0"
+    }
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
