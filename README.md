@@ -84,3 +84,59 @@ module.exports = {
 #### use postman to check localhost:3000/api
 
 nuxt server middleware will return "Hello World"
+
+### using cypress in drone
+``` yml
+kind: pipeline
+type: docker
+name: build
+
+steps:
+- name: nuxt-build
+  image: node:10
+  environment:
+    CYPRESS_CACHE_FOLDER: /drone/src/.cypress_cache
+  commands:
+  - npm install
+  - npm run build
+  when:
+    branch:
+    - master
+    event: push
+
+- name: nuxt-run
+  image: node:10
+  environment:
+    CYPRESS_CACHE_FOLDER: /drone/src/.cypress_cache
+  commands:
+  - npm run start  
+  ports:
+  - 3000
+  detach: true
+  when:
+    branch:
+    - master
+    event: push
+
+- name: pin
+  image: node:10
+  commands:
+  - sleep 3
+  - curl -f -L http://nuxt-run:3000
+
+- name: e2e-testing
+  image: cypress/browsers:chrome69
+  environment:
+    CYPRESS_CACHE_FOLDER: /drone/src/.cypress_cache
+  commands:
+  - npx cypress run --env api_server=http://nuxt-run:3000
+  when:
+    event:
+    - push
+```
++ Must set CYPRESS_CACHE_FOLDER
++ Run server in detach step or service to avoid blocking steps
++ Server ip is detach step name or service name, ex. http://nuxt-run:3000
++ Do not use localhost:port or any hardcode url
++ Do not use app as detach steps or service name. It will cause unknown error using cypress
+
